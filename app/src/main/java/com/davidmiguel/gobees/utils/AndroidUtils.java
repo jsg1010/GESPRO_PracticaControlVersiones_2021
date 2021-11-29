@@ -15,14 +15,29 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <https://www.gnu.org/licenses/gpl-3.0.txt>.
  */
-
 package com.davidmiguel.gobees.utils;
 
 import android.app.Activity;
 import android.content.Context;
+import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+
+
+
+
+
+
+
+
+
+
+
+
+
+    @@ -85,7 +86,7 @@ public static void closeKeyboard(Activity activity) {
+
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -33,22 +48,17 @@ import android.text.Html;
 import android.text.Spanned;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
-
 import com.davidmiguel.gobees.R;
-
 import static com.google.common.base.Preconditions.checkNotNull;
-
 /**
  * Android related utilities.
  */
 public final class AndroidUtils {
-
     /**
      * Private constructor.
      */
     private AndroidUtils() {
     }
-
     /**
      * The fragment is added to the container view with id frameId. The operation is
      * performed by the fragmentManager.
@@ -61,7 +71,6 @@ public final class AndroidUtils {
         transaction.add(frameId, fragment);
         transaction.commit();
     }
-
     /**
      * Closes / hides soft Android keyboard.
      *
@@ -75,7 +84,6 @@ public final class AndroidUtils {
             imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
         }
     }
-
     /**
      * Html.fromHtml wrapper supporting new and old versions.
      *
@@ -85,14 +93,23 @@ public final class AndroidUtils {
     @SuppressWarnings("deprecation")
     public static Spanned fromHtml(String html) {
         Spanned result;
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             result = Html.fromHtml(html, Html.FROM_HTML_MODE_LEGACY);
         } else {
             result = Html.fromHtml(html);
+
+
+
+
+
+
+
+
+
+
         }
         return result;
     }
-
     /**
      * Set up the loading indicator and its associated action.
      *
@@ -106,13 +123,11 @@ public final class AndroidUtils {
         // Set up progress indicator
         final ScrollChildSwipeRefreshLayout swipeRefreshLayout =
                 (ScrollChildSwipeRefreshLayout) root.findViewById(R.id.refresh_layout);
-
         swipeRefreshLayout.setColorSchemeColors(
                 ContextCompat.getColor(context, R.color.colorPrimary),
                 ContextCompat.getColor(context, R.color.colorAccent),
                 ContextCompat.getColor(context, R.color.colorPrimaryDark)
         );
-
         // Set the scrolling view in the custom SwipeRefreshLayout
         swipeRefreshLayout.setScrollUpChild(childView);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -122,7 +137,6 @@ public final class AndroidUtils {
             }
         });
     }
-
     /**
      * Displays or hide loading indicator.
      *
@@ -143,7 +157,6 @@ public final class AndroidUtils {
             }
         });
     }
-
     /**
      * Setup toolbar.
      *
@@ -170,7 +183,6 @@ public final class AndroidUtils {
         }
         return ab;
     }
-
     /**
      * Setup toolbar.
      *

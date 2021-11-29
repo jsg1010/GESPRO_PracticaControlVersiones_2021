@@ -15,11 +15,9 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <https://www.gnu.org/licenses/gpl-3.0.txt>.
  */
-
 package com.davidmiguel.gobees.data.source.local;
 
 import android.support.annotation.NonNull;
-import android.util.Log;
 
 import com.davidmiguel.gobees.data.model.Apiary;
 import com.davidmiguel.gobees.data.model.Hive;
@@ -27,36 +25,29 @@ import com.davidmiguel.gobees.data.model.MeteoRecord;
 import com.davidmiguel.gobees.data.model.Record;
 import com.davidmiguel.gobees.data.model.Recording;
 import com.davidmiguel.gobees.data.source.GoBeesDataSource;
+import com.davidmiguel.gobees.logging.Log;
 import com.davidmiguel.gobees.utils.DateTimeUtils;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
-
 import io.realm.Realm;
 import io.realm.RealmResults;
-
 /**
  * Concrete implementation of a data source as a Realm db.
  */
 public class GoBeesLocalDataSource implements GoBeesDataSource {
 
-    private static final String TAG = GoBeesLocalDataSource.class.getSimpleName();
-
     // Fields names
     private static final String ID = "id";
     private static final String TIMESTAMP = "timestamp";
     private static final String LAST_REVISION = "lastRevision";
-
     private static GoBeesLocalDataSource instance;
     private Realm realm;
-
-
     private GoBeesLocalDataSource() {
         // Singleton
     }
-
     /**
      * Get GoBeesLocalDataSource instance.
      *
@@ -68,83 +59,74 @@ public class GoBeesLocalDataSource implements GoBeesDataSource {
         }
         return instance;
     }
-
     @Override
     public void openDb() {
         realm = Realm.getDefaultInstance();
     }
-
     @Override
     public void closeDb() {
         realm.close();
     }
-
     @Override
     public void deleteAll(@NonNull TaskCallback callback) {
         try {
             realm.executeTransaction(new Realm.Transaction() {
                 @Override
-                public void execute(Realm realm) {
+                public void execute(@NonNull Realm realm) {
                     realm.deleteAll();
                 }
             });
             callback.onSuccess();
         } catch (Exception e) {
-            Log.e(TAG, "Error: deleteAll()", e);
+            Log.e(e, "Error: deleteAll()");
             callback.onFailure();
         }
     }
-
     @Override
     public void getApiaries(@NonNull GetApiariesCallback callback) {
         try {
             RealmResults<Apiary> apiaries = realm.where(Apiary.class).findAll();
             callback.onApiariesLoaded(realm.copyFromRealm(apiaries));
         } catch (Exception e) {
-            Log.e(TAG, "Error: getApiaries()", e);
+            Log.e(e, "Error: getApiaries()");
             callback.onDataNotAvailable();
         }
     }
-
     @Override
     public void getApiary(long apiaryId, @NonNull GetApiaryCallback callback) {
         try {
             Apiary apiary = realm.where(Apiary.class).equalTo(ID, apiaryId).findFirst();
             callback.onApiaryLoaded(realm.copyFromRealm(apiary));
         } catch (Exception e) {
-            Log.e(TAG, "Error: getApiary()", e);
+            Log.e(e, "Error: getApiary()");
             callback.onDataNotAvailable();
         }
     }
-
     @Override
     public Apiary getApiaryBlocking(long apiaryId) {
         return realm.copyFromRealm(realm.where(Apiary.class).equalTo(ID, apiaryId).findFirst());
     }
-
     @Override
     public void saveApiary(@NonNull final Apiary apiary, @NonNull TaskCallback callback) {
         try {
             realm.executeTransaction(new Realm.Transaction() {
                 @Override
-                public void execute(Realm realm) {
+                public void execute(@NonNull Realm realm) {
                     // Save apiary
                     realm.copyToRealmOrUpdate(apiary);
                 }
             });
             callback.onSuccess();
         } catch (Exception e) {
-            Log.e(TAG, "Error: saveApiary()", e);
+            Log.e(e, "Error: saveApiary()");
             callback.onFailure();
         }
     }
-
     @Override
     public void refreshApiaries() {
         // Not required because the GoBeesRepository handles the logic of refreshing the
         // data from all the available data sources
     }
-
     @Override
     public void deleteApiary(long apiaryId, @NonNull TaskCallback callback) {
         try {
@@ -153,7 +135,7 @@ public class GoBeesLocalDataSource implements GoBeesDataSource {
             // Delete
             realm.executeTransaction(new Realm.Transaction() {
                 @Override
-                public void execute(Realm realm) {
+                public void execute(@NonNull Realm realm) {
                     if (apiary.getHives() != null) {
                         // Delete records of the hives
                         for (Hive hive : apiary.getHives()) {
@@ -178,35 +160,32 @@ public class GoBeesLocalDataSource implements GoBeesDataSource {
             });
             callback.onSuccess();
         } catch (Exception e) {
-            Log.e(TAG, "Error: deleteApiary()", e);
+            Log.e(e, "Error: deleteApiary()");
             callback.onFailure();
         }
     }
-
     @Override
     public void deleteAllApiaries(@NonNull TaskCallback callback) {
         try {
             final RealmResults<Apiary> apiaries = realm.where(Apiary.class).findAll();
             realm.executeTransaction(new Realm.Transaction() {
                 @Override
-                public void execute(Realm realm) {
+                public void execute(@NonNull Realm realm) {
                     // Delete all apiaries
                     apiaries.deleteAllFromRealm();
                 }
             });
             callback.onSuccess();
         } catch (Exception e) {
-            Log.e(TAG, "Error: deleteAllApiaries()", e);
+            Log.e(e, "Error: deleteAllApiaries()");
             callback.onFailure();
         }
     }
-
     @Override
     public void getNextApiaryId(@NonNull GetNextApiaryIdCallback callback) {
         Number nextId = realm.where(Apiary.class).max(ID);
         callback.onNextApiaryIdLoaded(nextId != null ? nextId.longValue() + 1 : 0);
     }
-
     @Override
     public Date getApiaryLastRevision(long apiaryId) {
         // Get apiary
@@ -215,7 +194,6 @@ public class GoBeesLocalDataSource implements GoBeesDataSource {
         return apiary.getHives() == null
                 ? null : apiary.getHives().where().maximumDate(LAST_REVISION);
     }
-
     @SuppressWarnings("ConstantConditions")
     @Override
     public void getHives(long apiaryId, @NonNull GetHivesCallback callback) {
@@ -223,22 +201,20 @@ public class GoBeesLocalDataSource implements GoBeesDataSource {
             Apiary apiary = realm.where(Apiary.class).equalTo(ID, apiaryId).findFirst();
             callback.onHivesLoaded(realm.copyFromRealm(apiary.getHives()));
         } catch (Exception e) {
-            Log.e(TAG, "Error: getHives()", e);
+            Log.e(e, "Error: getHives()");
             callback.onDataNotAvailable();
         }
     }
-
     @Override
     public void getHive(long hiveId, @NonNull GetHiveCallback callback) {
         try {
             Hive hive = realm.where(Hive.class).equalTo(ID, hiveId).findFirst();
             callback.onHiveLoaded(realm.copyFromRealm(hive));
         } catch (Exception e) {
-            Log.e(TAG, "Error: getHive()", e);
+            Log.e(e, "Error: getHive()");
             callback.onDataNotAvailable();
         }
     }
-
     @Override
     public void getHiveWithRecordings(long hiveId, @NonNull GetHiveCallback callback) {
         try {
@@ -279,24 +255,22 @@ public class GoBeesLocalDataSource implements GoBeesDataSource {
             // Return hive
             callback.onHiveLoaded(hive);
         } catch (Exception e) {
-            Log.e(TAG, "Error: getHiveWithRecordings()", e);
+            Log.e(e, "Error: getHiveWithRecordings()");
             callback.onDataNotAvailable();
         }
     }
-
     @Override
     public void refreshHives(long apiaryId) {
         // Not required because the GoBeesRepository handles the logic of refreshing the
         // data from all the available data sources
     }
-
     @Override
     public void saveHive(final long apiaryId, @NonNull final Hive hive,
                          @NonNull TaskCallback callback) {
         try {
             realm.executeTransaction(new Realm.Transaction() {
                 @Override
-                public void execute(Realm realm) {
+                public void execute(@NonNull Realm realm) {
                     // Save hive
                     realm.copyToRealmOrUpdate(hive);
                     // Add to apiary
@@ -312,18 +286,17 @@ public class GoBeesLocalDataSource implements GoBeesDataSource {
             });
             callback.onSuccess();
         } catch (Exception e) {
-            Log.e(TAG, "Error: saveHive()", e);
+            Log.e(e, "Error: saveHive()");
             callback.onFailure();
         }
     }
-
     @Override
     public void deleteHive(long hiveId, @NonNull TaskCallback callback) {
         try {
             final Hive hive = realm.where(Hive.class).equalTo(ID, hiveId).findFirst();
             realm.executeTransaction(new Realm.Transaction() {
                 @Override
-                public void execute(Realm realm) {
+                public void execute(@NonNull Realm realm) {
                     // Delete records of the hive
                     if (hive.getRecords() != null) {
                         hive.getRecords().where().findAll().deleteAllFromRealm();
@@ -334,24 +307,22 @@ public class GoBeesLocalDataSource implements GoBeesDataSource {
             });
             callback.onSuccess();
         } catch (Exception e) {
-            Log.e(TAG, "Error: deleteHive()", e);
+            Log.e(e, "Error: deleteHive()");
             callback.onFailure();
         }
     }
-
     @Override
     public void getNextHiveId(@NonNull GetNextHiveIdCallback callback) {
         Number nextId = realm.where(Hive.class).max(ID);
         callback.onNextHiveIdLoaded(nextId != null ? nextId.longValue() + 1 : 0);
     }
-
     @Override
     public void saveRecord(final long hiveId, @NonNull final Record record,
                            @NonNull TaskCallback callback) {
         try {
             realm.executeTransaction(new Realm.Transaction() {
                 @Override
-                public void execute(Realm realm) {
+                public void execute(@NonNull Realm realm) {
                     // Save record
                     realm.copyToRealmOrUpdate(record);
                     // Add to hive
@@ -361,11 +332,10 @@ public class GoBeesLocalDataSource implements GoBeesDataSource {
             });
             callback.onSuccess();
         } catch (Exception e) {
-            Log.e(TAG, "Error: saveRecord()", e);
+            Log.e(e, "Error: saveRecord()");
             callback.onFailure();
         }
     }
-
     @Override
     public void saveRecords(final long hiveId, @NonNull final List<Record> records,
                             @NonNull SaveRecordingCallback callback) {
@@ -385,7 +355,7 @@ public class GoBeesLocalDataSource implements GoBeesDataSource {
             // Save records
             realm.executeTransaction(new Realm.Transaction() {
                 @Override
-                public void execute(Realm realm) {
+                public void execute(@NonNull Realm realm) {
                     // Save records
                     for (Record r : records) {
                         realm.copyToRealmOrUpdate(r);
@@ -399,11 +369,10 @@ public class GoBeesLocalDataSource implements GoBeesDataSource {
             });
             callback.onSuccess();
         } catch (Exception e) {
-            Log.e(TAG, "Error: saveRecords()", e);
+            Log.e(e, "Error: saveRecords()");
             callback.onFailure();
         }
     }
-
     @Override
     public void getRecording(long apiaryId, long hiveId, Date start, Date end,
                              @NonNull GetRecordingCallback callback) {
@@ -442,7 +411,6 @@ public class GoBeesLocalDataSource implements GoBeesDataSource {
                 realm.copyFromRealm(records), realm.copyFromRealm(meteoRecords));
         callback.onRecordingLoaded(recording);
     }
-
     @Override
     public void deleteRecording(long hiveId, @NonNull Recording recording,
                                 @NonNull TaskCallback callback) {
@@ -466,18 +434,17 @@ public class GoBeesLocalDataSource implements GoBeesDataSource {
                 // Delete records
                 realm.executeTransaction(new Realm.Transaction() {
                     @Override
-                    public void execute(Realm realm) {
+                    public void execute(@NonNull Realm realm) {
                         records.deleteAllFromRealm();
                     }
                 });
             }
             callback.onSuccess();
         } catch (Exception e) {
-            Log.e(TAG, "Error: deleteRecording()", e);
+            Log.e(e, "Error: deleteRecording()");
             callback.onFailure();
         }
     }
-
     @SuppressWarnings("ConstantConditions")
     @Override
     public void updateApiariesCurrentWeather(final List<Apiary> apiariesToUpdate,
@@ -486,7 +453,7 @@ public class GoBeesLocalDataSource implements GoBeesDataSource {
             // Save meteo records
             realm.executeTransaction(new Realm.Transaction() {
                 @Override
-                public void execute(Realm realm) {
+                public void execute(@NonNull Realm realm) {
                     // Get next id
                     Number n = realm.where(MeteoRecord.class).max(ID);
                     long nextId = n != null ? n.longValue() + 1 : 0;
@@ -500,7 +467,7 @@ public class GoBeesLocalDataSource implements GoBeesDataSource {
             });
             realm.executeTransaction(new Realm.Transaction() {
                 @Override
-                public void execute(Realm realm) {
+                public void execute(@NonNull Realm realm) {
                     // Save apiaries with current weather updated
                     for (Apiary apiary : apiariesToUpdate) {
                         // Get apiary from db
@@ -520,11 +487,10 @@ public class GoBeesLocalDataSource implements GoBeesDataSource {
             });
             callback.onSuccess();
         } catch (Exception e) {
-            Log.e(TAG, "Error: updateApiariesCurrentWeather()", e);
+            Log.e(e, "Error: updateApiariesCurrentWeather()");
             callback.onFailure();
         }
     }
-
     @Override
     public void getAndSaveMeteoRecord(@NonNull final Apiary apiary, @NonNull TaskCallback callback) {
         try {
@@ -534,7 +500,7 @@ public class GoBeesLocalDataSource implements GoBeesDataSource {
             final MeteoRecord meteoRecord = apiary.getMeteoRecords().first();
             realm.executeTransaction(new Realm.Transaction() {
                 @Override
-                public void execute(Realm realm) {
+                public void execute(@NonNull Realm realm) {
                     // Get next id
                     Number n = realm.where(MeteoRecord.class).max(ID);
                     long nextId = n != null ? n.longValue() + 1 : 0;
@@ -549,16 +515,15 @@ public class GoBeesLocalDataSource implements GoBeesDataSource {
             });
             callback.onSuccess();
         } catch (Exception e) {
-            Log.e(TAG, "Error: getAndSaveMeteoRecord()", e);
+            Log.e(e, "Error: getAndSaveMeteoRecord()");
             callback.onFailure();
         }
     }
-
     @Override
     public void saveMeteoRecords(final long apiaryId, @NonNull final List<MeteoRecord> meteoRecords) {
         realm.executeTransaction(new Realm.Transaction() {
             @Override
-            public void execute(Realm realm) {
+            public void execute(@NonNull Realm realm) {
                 // Get next id
                 Number n = realm.where(MeteoRecord.class).max(ID);
                 long nextId = n != null ? n.longValue() + 1 : 0;
@@ -574,7 +539,6 @@ public class GoBeesLocalDataSource implements GoBeesDataSource {
             }
         });
     }
-
     @Override
     public void refreshRecordings(long hiveId) {
         // Not required because the GoBeesRepository handles the logic of refreshing the

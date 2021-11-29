@@ -15,16 +15,25 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <https://www.gnu.org/licenses/gpl-3.0.txt>.
  */
-
 package com.davidmiguel.gobees.monitoring.camera;
-
 import android.graphics.SurfaceTexture;
 import android.hardware.Camera;
 import android.hardware.Camera.CameraInfo;
-import android.util.Log;
+import android.hardware.Camera.PreviewCallback;
+
+import com.davidmiguel.gobees.logging.Log;
 
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;
+
+
+
+
+
+
+
+
+    @@ -32,6 +34,8 @@
 
 import java.io.IOException;
 import java.util.Collections;
@@ -32,9 +41,21 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import static com.makeramen.roundedimageview.RoundedImageView.TAG;
+
 /**
  * Implementation of the Android camera that retrieves the frames in OpenCV Mat format.
  * Based on:
+
+
+
+
+
+
+
+
+    @@ -45,15 +49,14 @@
+
  * - http://stackoverflow.com/a/24206165/6305235.
  * - http://stackoverflow.com/q/2386025/6305235.
  * Notes:
@@ -45,24 +66,32 @@ import java.util.TimerTask;
  * The camera is handled in a different thread.
  */
 @SuppressWarnings("deprecation")
-public class AndroidCameraImpl implements AndroidCamera, Camera.PreviewCallback {
+public class AndroidCameraImpl implements AndroidCamera, PreviewCallback {
 
-    private static final String TAG = "AndroidCameraImpl";
 
     private final AndroidCameraListener user;
     private final CameraHandlerThread cameraHandlerThread;
     private final int cameraIndex;
-    private android.hardware.Camera camera;
-    private int maxframewidth;
+    private Camera camera;
+    private int maxFrameWidth;
     private int maxFrameHeight;
     private int zoomRatio;
     private long initialDelay;
+
+
+
+
+
+
+
+
+    @@ -78,7 +81,7 @@ public AndroidCameraImpl(AndroidCameraListener user, int cameraIndex,
+
     private long frameRate;
     private TakePhotoTask takePhotoTask;
     private Timer timer;
     private CameraFrame cameraFrame;
     private SurfaceTexture texture = new SurfaceTexture(0);
-
     /**
      * AndroidCameraImpl constructor.
      *
@@ -78,10 +107,20 @@ public class AndroidCameraImpl implements AndroidCamera, Camera.PreviewCallback 
                              long initialDelay, long frameRate) {
         this.user = user;
         this.cameraIndex = cameraIndex;
-        this.maxframewidth = maxFrameWidth;
+        this.maxFrameWidth = maxFrameWidth;
         this.maxFrameHeight = maxFrameHeight;
         this.zoomRatio = zoomRatio;
         this.initialDelay = initialDelay;
+
+
+
+
+
+
+
+
+    @@ -89,7 +92,7 @@ public AndroidCameraImpl(AndroidCameraListener user, int cameraIndex,
+
         this.frameRate = frameRate;
         this.cameraHandlerThread = new CameraHandlerThread(this);
         this.takePhotoTask = new TakePhotoTask();
@@ -89,10 +128,24 @@ public class AndroidCameraImpl implements AndroidCamera, Camera.PreviewCallback 
     }
 
     @Override
-    public void onPreviewFrame(byte[] frame, android.hardware.Camera camera) {
+    public void onPreviewFrame(byte[] frame, Camera camera) {
         cameraFrame.putFrameData(frame);
         user.onPreviewFrame(cameraFrame);
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+    @@ -121,7 +124,7 @@ public void release() {
 
     @Override
     public synchronized void connect() {
@@ -104,7 +157,6 @@ public class AndroidCameraImpl implements AndroidCamera, Camera.PreviewCallback 
             cameraHandlerThread.openCamera();
         }
     }
-
     @Override
     public void release() {
         synchronized (this) {
@@ -121,10 +173,25 @@ public class AndroidCameraImpl implements AndroidCamera, Camera.PreviewCallback 
                 try {
                     camera.setPreviewTexture(null);
                 } catch (IOException e) {
-                    Log.e(TAG, "Could not release preview-texture from camera.", e);
+                    Log.e(e, "Could not release preview-texture from camera.");
                 }
                 camera.release();
                 camera = null;
+
+
+
+
+
+
+
+
+
+
+
+
+
+    @@ -158,7 +161,7 @@ public void updateFrameRate(long delay, long period) {
+
             }
             // Release camera frame
             if (cameraFrame != null) {
@@ -136,12 +203,10 @@ public class AndroidCameraImpl implements AndroidCamera, Camera.PreviewCallback 
             }
         }
     }
-
     @Override
     public boolean isConnected() {
         return camera != null;
     }
-
     @Override
     public void updateFrameRate(long delay, long period) {
         this.timer.cancel();
@@ -151,17 +216,31 @@ public class AndroidCameraImpl implements AndroidCamera, Camera.PreviewCallback 
         this.frameRate = period;
         timer.scheduleAtFixedRate(takePhotoTask, delay, period);
     }
-
     /**
      * Starts capturing and converting preview frames.
      */
     @SuppressWarnings("ConstantConditions")
     void initCamera() {
         // Get camera instance
-        camera = getCameraInstance(cameraIndex, maxframewidth, maxFrameHeight, zoomRatio);
+        camera = getCameraInstance(cameraIndex, maxFrameWidth, maxFrameHeight, zoomRatio);
         if (camera == null) {
             return;
         }
+
+
+
+
+
+
+
+
+
+
+
+
+
+    @@ -197,7 +200,7 @@ private Camera getCameraInstance(int facing, int maxFrameWidth,
+
         // Save frame size
         Camera.Parameters params = camera.getParameters();
         int mFrameWidth = params.getPreviewSize().width;
@@ -185,7 +264,6 @@ public class AndroidCameraImpl implements AndroidCamera, Camera.PreviewCallback 
             Log.d(TAG, "Error starting camera preview: " + e.getMessage(), e);
         }
     }
-
     /**
      * Get an instance of the camera that meets the requirements (facing, size, zoom).
      *
@@ -197,10 +275,25 @@ public class AndroidCameraImpl implements AndroidCamera, Camera.PreviewCallback 
         // Get desired camera
         Camera cam = getCamera(facing);
         if (cam == null) {
-            Log.e(TAG, "Could not find any camera matching facing: " + facing);
+            Log.e("Could not find any camera matching facing: " + facing);
             return null;
         }
         // Set frame size
+
+
+
+
+
+
+
+
+
+
+
+
+
+    @@ -227,7 +230,7 @@ private Camera getCamera(int facing) {
+
         setFrameSize(cam, maxFrameWidth, maxFrameHeight);
         // Set zoom ratio
         setZoomRatio(cam, zoomRatio);
@@ -208,7 +301,6 @@ public class AndroidCameraImpl implements AndroidCamera, Camera.PreviewCallback 
         setAutofocus(cam);
         return cam;
     }
-
     /**
      * Gets and opens the desired camera if it exists.
      *
@@ -227,13 +319,22 @@ public class AndroidCameraImpl implements AndroidCamera, Camera.PreviewCallback 
                     cam = Camera.open(camIndex);
                     break;
                 } catch (RuntimeException e) {
-                    Log.e(TAG, "AndroidCamera is not available (in use or does not exist).", e);
+                    Log.e(e, "AndroidCamera is not available (in use or does not exist).");
                 }
             }
         }
+
+
+
+
+
+
+
+
+    @@ -253,7 +256,7 @@ private void setFrameSize(Camera camera, int maxFrameWidth, int maxFrameHeight)
+
         return cam;
     }
-
     /**
      * Sets the frame size with the given values.
      *
@@ -253,14 +354,23 @@ public class AndroidCameraImpl implements AndroidCamera, Camera.PreviewCallback 
             previewSize = size;
         }
         if (previewSize == null) {
-            Log.e(TAG, "Could not find any camera matching sizes: "
+            Log.e("Could not find any camera matching sizes: "
                     + maxFrameWidth + "x" + maxFrameHeight);
             return;
         }
+
+
+
+
+
+
+
+
+
+
         params.setPreviewSize(previewSize.width, previewSize.height);
         camera.setParameters(params);
     }
-
     /**
      * Sets the zoom ratio with the given value.
      *
@@ -284,7 +394,6 @@ public class AndroidCameraImpl implements AndroidCamera, Camera.PreviewCallback 
             camera.setParameters(params);
         }
     }
-
     /**
      * Set focus mode.
      *
@@ -298,7 +407,6 @@ public class AndroidCameraImpl implements AndroidCamera, Camera.PreviewCallback 
         }
         camera.setParameters(params);
     }
-
     // Timer task for continuous triggering of preview callbacks
     private class TakePhotoTask extends TimerTask {
         @Override
