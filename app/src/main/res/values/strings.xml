@@ -16,13 +16,10 @@
   ~ You should have received a copy of the GNU General Public License
   ~ along with this program. If not, see <https://www.gnu.org/licenses/gpl-3.0.txt>.
   -->
-
 <resources xmlns:xliff="http://schemas.android.com/apk/res-auto">
-
     <!--+++++++++++-->
     <!-- Generals  -->
     <!--+++++++++++-->
-
     <!-- App name [CHAR LIMIT=NONE] -->
     <string name="app_name" translatable="false">GoBees</string>
     <!-- App name - Go [CHAR LIMIT=NONE] -->
@@ -49,12 +46,9 @@
     <string name="permission_request_denied">The app does not have permissions to use this feature.</string>
     <!-- Loading message [CHAR LIMIT=100] -->
     <string name="loading_msg">Loading…</string>
-
-
     <!--+++++++++-->
     <!-- Weather -->
     <!--+++++++++-->
-
     <!-- Weather condition [CHAR LIMIT=15] -->
     <string name="weather_condition">Condition</string>
     <!-- Temperature [CHAR LIMIT=30] -->
@@ -175,10 +169,23 @@
     <string name="condition_962">Hurricane</string>
     <string name="condition_unknown">Unknown (<xliff:g id="conditionId">%1$d</xliff:g>)</string>
 
-
     <!--+++++++++++++++-->
     <!-- General Icons -->
     <!--+++++++++++++++-->
+
+
+
+
+
+
+
+
+
+
+
+
+
+    @@ -400,7 +399,6 @@
 
     <!-- Description of icon ic_more_vert [CHAR LIMIT=100] -->
     <string name="more_icon">More…</string>
@@ -202,11 +209,9 @@
     <string name="num_hives">Number of hives</string>
     <!-- Description of name icon[CHAR LIMIT=100] -->
     <string name="name_icon">Name</string>
-
     <!--+++++++++++++++-->
     <!-- drawerLayout  -->
     <!--+++++++++++++++-->
-
     <!-- Settings [CHAR LIMIT=30] -->
     <string name="settings_title">Settings</string>
     <!-- Help [CHAR LIMIT=30] -->
@@ -217,11 +222,9 @@
     <string name="share_app_title">Share this app</string>
     <!-- About GoBees [CHAR LIMIT=30] -->
     <string name="about_title">About GoBees</string>
-
     <!--++++++++++-->
     <!-- Apiaries -->
     <!--++++++++++-->
-
     <!-- Default apiary name [CHAR LIMIT=100] -->
     <string name="default_apiary_name">My apiary</string>
     <!-- Default value number of bees [CHAR LIMIT=NONE] -->
@@ -240,11 +243,9 @@
     <string name="successfully_updated_weather_message">Current weather updated!</string>
     <!-- Msg shown when an error occurs when updating weather [CHAR LIMIT=100] -->
     <string name="weather_update_error_message">Error while updating current weather.</string>
-
     <!--++++++++++++-->
     <!-- Add apiary -->
     <!--++++++++++++-->
-
     <!-- Edit apiary action bar title [CHAR LIMIT=50] -->
     <string name="edit_apiary">Edit apiary</string>
     <!-- Add apiary action bar title [CHAR LIMIT=50] -->
@@ -273,11 +274,9 @@
     <string name="apiary_logo">Apiary logo</string>
     <!-- Body when user doesn't grant location permission [CHAR LIMIT=500] -->
     <string name="location_permission_request_body">Without this permission the app is unable to receive weather information or to locate your apiaries in a map. Are you sure you want to deny this permission?</string>
-
     <!--++++++++-->
     <!-- Apiary -->
     <!--++++++++-->
-
     <!-- Apiary hives tab name [CHAR LIMIT=30] -->
     <string name="apiary_hives_tab">Hives</string>
     <!-- Apiary info tab name [CHAR LIMIT=30] -->
@@ -314,11 +313,9 @@
     <string name="no_location">No location</string>
     <!-- Default value city [CHAR LIMIT=100] -->
     <string name="default_city">Burgos</string>
-
     <!--++++++++++-->
     <!-- Add hive -->
     <!--++++++++++-->
-
     <!-- Edit hive action bar title [CHAR LIMIT=50] -->
     <string name="edit_hive">Edit hive</string>
     <!-- Add hive action bar title [CHAR LIMIT=50] -->
@@ -331,11 +328,9 @@
     <string name="empty_hive_message">Hive name cannot be empty!</string>
     <!-- Error msg shown when it's not possible to save the hive [CHAR LIMIT=100] -->
     <string name="save_hive_error_message">Error while saving hive.</string>
-
     <!--++++++-->
     <!-- Hive -->
     <!--++++++-->
-
     <!-- Hive recordings tab name [CHAR LIMIT=20] -->
     <string name="hive_recordings_tab">Recordings</string>
     <!-- Hive info tab name [CHAR LIMIT=20] -->
@@ -369,8 +364,6 @@
     <string name="no_notes">No notes</string>
     <!-- General info title [CHAR LIMIT=100] -->
     <string name="general_info_title">General info</string>
-
-
     <!--+++++++++++-->
     <!-- Recording -->
     <!--+++++++++++-->
@@ -386,11 +379,9 @@
     <string name="recording_date_format">EEE d MMM, yyyy</string>
     <!-- Number of bees [CHAR LIMIT=30] -->
     <string name="num_bees">Nº bees</string>
-
     <!--++++++++++++-->
     <!-- Monitoring -->
     <!--++++++++++++-->
-
     <!-- Description of start record icon [CHAR LIMIT=100] -->
     <string name="start_record_icon">Start record icon</string>
     <!-- Text shown when the monitoring service is running [CHAR LIMIT=150] -->
@@ -400,23 +391,34 @@
     <!-- Monitoring notification text [CHAR LIMIT=100] -->
     <string name="monitoring_notification_text">Monitoring hive…</string>
 
-
     <!--++++++++++++++++++++-->
     <!-- Monitoring Settings-->
     <!--++++++++++++++++++++-->
+
+
+
+
+
+
+
+
+
+
+
+
+
+    @@ -445,7 +443,6 @@
 
     <!-- Label for bees category [CHAR LIMIT=30] -->
     <string name="pref_bees_cat_label">Bees</string>
     <!-- Key name for bees category in SharedPreferences [CHAR LIMIT=NONE] -->
     <string name="pref_bees_cat_key" translatable="false">bees</string>
-
     <!-- Label for the show algorithm output preference [CHAR LIMIT=30] -->
     <string name="pref_show_algo_output_label">Show algorithm output</string>
     <!-- Key name for show algorithm output preference in SharedPreferences [CHAR LIMIT=NONE] -->
     <string name="pref_show_algo_output_key" translatable="false">show_algo_output</string>
     <!-- Default value for show algorithm output preference [CHAR LIMIT=NONE] -->
     <string name="pref_show_algo_output_default" translatable="false">true</string>
-
     <!-- Label for the blob blobSize preference [CHAR LIMIT=30] -->
     <string name="pref_blob_size_label">Blob size</string>
     <!-- Label for blob blobSize small [CHAR LIMIT=25] -->
@@ -433,7 +435,6 @@
     <string name="pref_blob_size_normal" translatable="false">normal</string>
     <!-- Value in SharedPreferences for small blob blobSize [CHAR LIMIT=NONE] -->
     <string name="pref_blob_size_big" translatable="false">big</string>
-
     <!-- Label for the min area preference [CHAR LIMIT=30] -->
     <string name="pref_min_area_label">Min. area bee</string>
     <!-- Key name for min area preference in SharedPreferences [CHAR LIMIT=NONE] -->
@@ -445,10 +446,24 @@
     <!-- Default value in SharedPreferences for min area [CHAR LIMIT=NONE] -->
     <integer name="pref_min_area_default">15</integer>
 
-
     <!-- Label for the max area preference [CHAR LIMIT=30] -->
     <string name="pref_max_area_label">Max. area bee</string>
     <!-- Key name for max area preference in SharedPreferences [CHAR LIMIT=NONE] -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+    @@ -512,7 +509,6 @@
+
     <string name="pref_max_area_key" translatable="false">max_area</string>
     <!-- Min value in SharedPreferences for max area [CHAR LIMIT=NONE] -->
     <integer name="pref_max_area_min">400</integer>
@@ -456,12 +471,10 @@
     <integer name="pref_max_area_max">1500</integer>
     <!-- Default value in SharedPreferences for max area [CHAR LIMIT=NONE] -->
     <integer name="pref_max_area_default">800</integer>
-
     <!-- Label for camera category [CHAR LIMIT=30] -->
     <string name="pref_camera_cat_label">Camera</string>
     <!-- Key name for camera category in SharedPreferences [CHAR LIMIT=NONE] -->
     <string name="pref_camera_cat_key" translatable="false">camera</string>
-
     <!-- Label for the zoom preference [CHAR LIMIT=30] -->
     <string name="pref_zoom_label">Zoom</string>
     <!-- Label for zoom x1 [CHAR LIMIT=25] -->
@@ -478,7 +491,6 @@
     <string name="pref_zoom_x1_5" translatable="false">150</string>
     <!-- Value in SharedPreferences for zoom x2 [CHAR LIMIT=NONE] -->
     <string name="pref_zoom_x2" translatable="false">200</string>
-
     <!-- Label for the frame rate preference [CHAR LIMIT=30] -->
     <string name="pref_frame_rate_label">Frame rate</string>
     <!-- Label for frame rate 0.5 sec [CHAR LIMIT=25] -->
@@ -512,10 +524,23 @@
     <!-- Value in SharedPreferences for frame rate 5min [CHAR LIMIT=NONE] -->
     <string name="pref_frame_rate_5min" translatable="false">300000</string>
 
-
     <!--++++++++++-->
     <!-- Settings -->
     <!--++++++++++-->
+
+
+
+
+
+
+
+
+
+
+
+
+
+    @@ -557,6 +553,14 @@
 
     <!-- Toolbar title in settings [CHAR LIMIT=30] -->
     <string name="settings_toolbar_title">Settings</string>
@@ -536,7 +561,6 @@
     <!-- Value in SharedPreferences for imperial weather unit option [CHAR LIMIT=NONE] -->
     <string name="pref_weather_units_imperial" translatable="false">imperial</string>
     <!-- Label for data category [CHAR LIMIT=30] -->
-
     <string name="pref_data_cat_label">Data</string>
     <!-- Key name for data category in SharedPreferences [CHAR LIMIT=NONE] -->
     <string name="pref_data_cat_key" translatable="false">data</string>
@@ -557,11 +581,28 @@
     <!-- Data deleted successfully message [CHAR LIMIT=100] -->
     <string name="all_data_deleted_msg">Data deleted!</string>
 
+    <!--+++++++++++++++-->
+    <!-- Notifications -->
+    <!--+++++++++++++++-->
+
+    <!-- Monitoring channel [CHAR LIMIT=100] -->
+    <string name="not_channel_monitoring">Monitoring</string>
+    <!-- Monitoring channel description [CHAR LIMIT=300] -->
+    <string name="not_channel_monitoring_desc">Monitoring related notifications</string>
 
     <!--+++++++++++++++++++++-->
     <!-- Share app & feedback-->
-    <!--+++++++++++++++++++++-->
 
+
+
+
+
+
+
+
+    @@ -578,6 +582,7 @@
+
+    <!--+++++++++++++++++++++-->
     <!-- Share app text [CHAR LIMIT=30] -->
     <string name="share_app_text">GoBees - Android app for monitoring bee hives activity.\n</string>
     <!-- Share app url [CHAR LIMIT=30] -->
@@ -574,13 +615,28 @@
     <string name="gobees_email_subject" translatable="false">[Feedback]</string>
     <!-- Feedback email body [CHAR LIMIT=100] -->
     <string name="gobees_email_body">Write your feedback here…</string>
-
     <!--+++++++-->
     <!-- About -->
     <!--+++++++-->
+
     <!-- GoBees app [CHAR LIMIT=100] -->
     <string name="gobees_app" translatable="false">GoBees App</string>
     <!-- App version [CHAR LIMIT=100] -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+    @@ -856,7 +861,6 @@
+
     <string name="version">Version</string>
     <!-- App version default [CHAR LIMIT=100] -->
     <string name="default_version">Version 1.0</string>
@@ -658,7 +714,6 @@
         you may not use this file except in compliance with the License.
         You may obtain a copy of the License at
         <a href="http://www.apache.org/licenses/LICENSE-2.0">Apache v2.0</a>.</p>
-
         <p>Unless required by applicable law or agreed to in writing, software
         distributed under the License is distributed on an "AS IS" BASIS,
         WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express
@@ -675,10 +730,8 @@
         to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
         copies of the Software, and to permit persons to whom the Software is
         furnished to do so, subject to the following conditions:</p>
-
         <p>The above copyright notice and this permission notice shall be included in all
         copies or substantial portions of the Software.</p>
-
         <p>THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
         EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
         MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
@@ -693,7 +746,6 @@
         <![CDATA[
         <p>Redistribution and use in source and binary forms, with or without modification,
         are permitted provided that the following conditions are met:</p>
-
         <p>
             * Redistributions of source code must retain the above copyright notice,
               this list of conditions and the following disclaimer.<br>
@@ -704,7 +756,6 @@
               may be used to endorse or promote products derived from this software
               without specific prior written permission.
         </p>
-
         <p>THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
         "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
         LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
@@ -723,7 +774,6 @@
         <![CDATA[
         <p>The project is licensed under a
         Creative Commons Attribution-ShareAlike 3.0 Unported License.</p>
-
         <p>You should have received a copy of the license along with this
         work. If not, see <http://creativecommons.org/licenses/by-sa/3.0/>.</p>
         ]]>
@@ -856,10 +906,18 @@
         ]]>
     </string>
 
-
     <!--+++++++++++++++++++++-->
     <!-- Generate random data-->
     <!--+++++++++++++++++++++-->
+
+
+
+
+
+
+
+
+
 
     <!-- Sample apiary name [CHAR LIMIT=30] -->
     <string name="sample_apiary_name">Sample apiary</string>

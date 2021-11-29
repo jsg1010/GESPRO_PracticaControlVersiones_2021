@@ -15,9 +15,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <https://www.gnu.org/licenses/gpl-3.0.txt>.
  */
-
 package com.davidmiguel.gobees.monitoring;
-
 import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Context;
@@ -37,36 +35,28 @@ import android.widget.Chronometer;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
 import com.davidmiguel.gobees.R;
 import com.davidmiguel.gobees.data.source.GoBeesDataSource;
 import com.davidmiguel.gobees.hive.HiveRecordingsFragment;
 import com.davidmiguel.gobees.monitoring.MonitoringService.MonitoringBinder;
 import com.davidmiguel.gobees.monitoring.camera.CameraView;
 import com.davidmiguel.gobees.utils.BackClickHelperFragment;
-
 import org.opencv.android.BaseLoaderCallback;
 import org.opencv.android.CameraBridgeViewBase;
 import org.opencv.android.CameraBridgeViewBase.CvCameraViewListener2;
 import org.opencv.android.LoaderCallbackInterface;
 import org.opencv.android.OpenCVLoader;
-
 import static com.google.common.base.Preconditions.checkNotNull;
-
 /**
  * Displays a feed from the camera processed by the CV algorithm.
  */
 public class MonitoringFragment extends Fragment implements MonitoringContract.View,
         BackClickHelperFragment {
-
     public static final String ARGUMENT_APIARY_ID = "APIARY_ID";
     public static final String ARGUMENT_HIVE_ID = "HIVE_ID";
-
     private static final int MAX_HEIGHT = 480;
     private static final int MAX_WIDTH = 640;
-
     private MonitoringContract.Presenter presenter;
-
     private BaseLoaderCallback loaderCallback;
     private CameraView cameraView;
     private TextView numBeesTV;
@@ -74,25 +64,19 @@ public class MonitoringFragment extends Fragment implements MonitoringContract.V
     private ImageView settingsIcon;
     private ImageView recordIcon;
     private Chronometer chronometer;
-
     private MonitoringService mService;
     private ServiceConnection mConnection;
-
-
     public MonitoringFragment() {
         // Requires empty public constructor
     }
-
     public static MonitoringFragment newInstance() {
         return new MonitoringFragment();
     }
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.monitoring_frag, container, false);
-
         // Configure OpenCV callback
         loaderCallback = new BaseLoaderCallback(getContext()) {
             @Override
@@ -104,10 +88,8 @@ public class MonitoringFragment extends Fragment implements MonitoringContract.V
                 }
             }
         };
-
         // Don't switch off screen
         getActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
-
         // Configure camera
         cameraView = (CameraView) root.findViewById(R.id.camera_view);
         cameraView.setCameraIndex(CameraBridgeViewBase.CAMERA_ID_BACK);
@@ -116,7 +98,6 @@ public class MonitoringFragment extends Fragment implements MonitoringContract.V
         numBeesTV = (TextView) root.findViewById(R.id.num_bees);
         settingsLayout = (RelativeLayout) getActivity().findViewById(R.id.settings);
         chronometer = (Chronometer) root.findViewById(R.id.chronometer);
-
         // Configure icons
         settingsIcon = (ImageView) root.findViewById(R.id.settings_icon);
         settingsIcon.setOnClickListener(new View.OnClickListener() {
@@ -132,7 +113,6 @@ public class MonitoringFragment extends Fragment implements MonitoringContract.V
                 presenter.startMonitoring();
             }
         });
-
         // Configure service connection
         mConnection = new ServiceConnection() {
             @Override
@@ -147,16 +127,13 @@ public class MonitoringFragment extends Fragment implements MonitoringContract.V
                                 HiveRecordingsFragment.ERROR_RECORDING_TOO_SHORT);
                         getActivity().setResult(Activity.RESULT_CANCELED, intent);
                         getActivity().finish();
-
                     }
-
                     @Override
                     public void onSuccess() {
                         // Finish activity with OK
                         getActivity().setResult(Activity.RESULT_OK);
                         getActivity().finish();
                     }
-
                     @Override
                     public void onFailure() {
                         // Finish activity with error
@@ -172,7 +149,6 @@ public class MonitoringFragment extends Fragment implements MonitoringContract.V
                 chronometer.setVisibility(View.VISIBLE);
                 chronometer.start();
             }
-
             @Override
             public void onServiceDisconnected(ComponentName componentName) {
                 mService = null;
@@ -180,13 +156,11 @@ public class MonitoringFragment extends Fragment implements MonitoringContract.V
         };
         return root;
     }
-
     @Override
     public void onResume() {
         super.onResume();
         presenter.start(MonitoringService.isRunning());
     }
-
     @Override
     public void onPause() {
         if (cameraView != null) {
@@ -194,7 +168,6 @@ public class MonitoringFragment extends Fragment implements MonitoringContract.V
         }
         super.onPause();
     }
-
     @Override
     public void onDestroy() {
         // Disable camera view
@@ -207,33 +180,27 @@ public class MonitoringFragment extends Fragment implements MonitoringContract.V
         }
         super.onDestroy();
     }
-
     @Override
     public void setPresenter(@NonNull MonitoringContract.Presenter presenter) {
         this.presenter = checkNotNull(presenter);
     }
-
     @Override
     public boolean isActive() {
         return isAdded();
     }
-
     @Override
     public void initOpenCV(CvCameraViewListener2 listener) {
         OpenCVLoader.initAsync(OpenCVLoader.OPENCV_VERSION_3_2_0, getContext(), loaderCallback);
         cameraView.setCvCameraViewListener(listener);
     }
-
     @Override
     public void enableCameraView() {
         cameraView.enableView();
     }
-
     @Override
     public void updateAlgoZoom(int ratio) {
         cameraView.setZoom(ratio);
     }
-
     @Override
     public void setNumBees(final int numBees) {
         getActivity().runOnUiThread(new Runnable() {
@@ -243,30 +210,37 @@ public class MonitoringFragment extends Fragment implements MonitoringContract.V
             }
         });
     }
-
     @Override
     public void startMonitoringService(MonitoringSettings ms) {
         // Start service
         Intent intent = new Intent(getActivity(), MonitoringService.class);
         intent.setAction(MonitoringService.START_ACTION);
         intent.putExtra(MonitoringService.ARGUMENT_MON_SETTINGS, ms);
-        getActivity().startService(intent);
+        ContextCompat.startForegroundService(getContext(), intent);
     }
 
     @Override
+
+
+
+
+
+
+
+
+
+
     public void stopMonitoringService() {
         // Stop service
         Intent stopIntent = new Intent(getActivity(), MonitoringService.class);
         stopIntent.setAction(MonitoringService.STOP_ACTION);
         getActivity().startService(stopIntent);
     }
-
     @Override
     public void bindMonitoringService() {
         Intent intent = new Intent(getActivity(), MonitoringService.class);
         getActivity().bindService(intent, mConnection, Context.BIND_AUTO_CREATE);
     }
-
     @Override
     public void hideCameraView() {
         // Hide camera view
@@ -279,9 +253,7 @@ public class MonitoringFragment extends Fragment implements MonitoringContract.V
         numBeesTV.setVisibility(View.GONE);
         settingsIcon.setVisibility(View.GONE);
         recordIcon.setOnClickListener(null);
-
     }
-
     @Override
     public void showMonitoringView() {
         // Show red stop button
@@ -296,7 +268,6 @@ public class MonitoringFragment extends Fragment implements MonitoringContract.V
             }
         });
     }
-
     @Override
     public void showNumBeesView(boolean active) {
         if (active) {
@@ -305,7 +276,6 @@ public class MonitoringFragment extends Fragment implements MonitoringContract.V
             numBeesTV.setVisibility(View.GONE);
         }
     }
-
     @Override
     public boolean onBackPressed() {
         if (settingsLayout.getVisibility() == View.VISIBLE) {
