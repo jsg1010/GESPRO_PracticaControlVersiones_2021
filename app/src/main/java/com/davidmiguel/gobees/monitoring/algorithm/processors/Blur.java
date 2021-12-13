@@ -15,6 +15,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <https://www.gnu.org/licenses/gpl-3.0.txt>.
  */
+
 package com.davidmiguel.gobees.monitoring.algorithm.processors;
 
 import android.support.annotation.NonNull;
@@ -23,17 +24,8 @@ import com.davidmiguel.gobees.logging.Log;
 
 import org.opencv.core.Mat;
 import org.opencv.core.Size;
-
-
-
-
-
-
-
-
-    @@ -30,15 +31,14 @@
-
 import org.opencv.imgproc.Imgproc;
+
 /**
  * Implements a Blur algorithm (in particular, Gaussian Blur).
  */
@@ -50,16 +42,6 @@ public class Blur implements VideoProcessor {
             return null;
         }
         Mat tmp = frame.clone();
-
-
-
-
-
-
-
-
-
-
         // Apply gaussian blur
         for (int i = 0; i < REPETITIONS; i++) {
             Imgproc.GaussianBlur(tmp, tmp, new Size(KERNEL_SIZE, KERNEL_SIZE), 0);

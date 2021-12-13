@@ -15,6 +15,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <https://www.gnu.org/licenses/gpl-3.0.txt>.
  */
+
 package com.davidmiguel.gobees.monitoring.algorithm.processors;
 
 import android.support.annotation.NonNull;
@@ -23,17 +24,8 @@ import com.davidmiguel.gobees.logging.Log;
 
 import org.opencv.core.Mat;
 import org.opencv.video.BackgroundSubtractorMOG2;
-
-
-
-
-
-
-
-
-    @@ -30,7 +31,6 @@
-
 import org.opencv.video.Video;
+
 /**
  * Implements a background subtraction algorithm (in particular, BackgroundSubtractorMOG2).
  */
@@ -42,21 +34,6 @@ public class BackgroundSubtractor implements VideoProcessor {
 
     // Number of frames to consider in the background model
     private static final int HISTORY = 10;
-
-
-
-
-
-
-
-
-
-
-
-
-
-    @@ -84,7 +84,7 @@ private BackgroundSubtractorMOG2 getMogInstance(int history, double shadowThresh
-
     // Ratio of frames to add a pixel to the bg model if it keeps semi-constant
     private static final double BACKGROUND_RATIO = 0.04;
     // Threshold to decide whether a pixel belongs to the background model or not
@@ -67,7 +44,9 @@ public class BackgroundSubtractor implements VideoProcessor {
     private static final boolean DETECT_SHADOWS = true;
     // Threshold to consider a pixel as shadow or not.
     private static final double SHADOWS_THRESHOLD = 0.7;
+
     private BackgroundSubtractorMOG2 mog;
+
     /**
      * Default BackgroundSubtractor constructor.
      * History is initialized to 10 and shadows threshold to 0.7.
@@ -75,6 +54,7 @@ public class BackgroundSubtractor implements VideoProcessor {
     public BackgroundSubtractor() {
         mog = getMogInstance(HISTORY, SHADOWS_THRESHOLD);
     }
+
     /**
      * BackgroundSubtractor constructor.
      *
@@ -84,6 +64,7 @@ public class BackgroundSubtractor implements VideoProcessor {
     public BackgroundSubtractor(int history, double shadowThreshold) {
         mog = getMogInstance(history, shadowThreshold);
     }
+
     /**
      * Get the instance of BackgroundSubtractorMOG2 with the desired configuration.
      *
@@ -99,6 +80,7 @@ public class BackgroundSubtractor implements VideoProcessor {
         instance.setShadowThreshold(shadowThreshold);
         return instance;
     }
+
     @Override
     public Mat process(@NonNull Mat frame) {
         if (frame.empty()) {
@@ -106,16 +88,6 @@ public class BackgroundSubtractor implements VideoProcessor {
             return null;
         }
         Mat foreground = new Mat();
-
-
-
-
-
-
-
-
-
-
         // Apply background substraction
         mog.apply(frame, foreground);
         return foreground;

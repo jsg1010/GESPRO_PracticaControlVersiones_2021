@@ -2,14 +2,17 @@ sudo: required
 language: android
 jdk: oraclejdk8
 compiler: gcc
+
 addons:
   sonarqube:
     branches:
       - master
       - develop
+
 env:
   matrix:
     - ANDROID_TARGET=android-26 ANDROID_ABI=armeabi-v7a
+
 android:
   components:
     - tools
@@ -21,6 +24,7 @@ android:
     - extra-google-m2repository
     - extra-google-google_play_services
     - sys-img-${ANDROID_ABI}-${ANDROID_TARGET}
+
 licenses:
     - '.+'
 
@@ -48,6 +52,7 @@ before_script:
     - chmod +x gradlew
     # Create gradle.properties with fake credentials
     - echo "OpenWeatherMapApiKey=\"c75f70c4717eb95847d378bba3bdb275\"" > ~/.gradle/gradle.properties
+
 script:
     # Compile and run unit tests
     - ./gradlew assembleDebug lint

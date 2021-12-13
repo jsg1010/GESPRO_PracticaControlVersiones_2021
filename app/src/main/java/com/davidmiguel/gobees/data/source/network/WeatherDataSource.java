@@ -15,6 +15,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <https://www.gnu.org/licenses/gpl-3.0.txt>.
  */
+
 package com.davidmiguel.gobees.data.source.network;
 
 import android.os.AsyncTask;
@@ -24,18 +25,9 @@ import com.davidmiguel.gobees.logging.Log;
 
 import org.json.JSONException;
 
-
-
-
-
-
-
-
-
-    @@ -33,7 +33,6 @@
-
 import java.io.IOException;
 import java.net.URL;
+
 /**
  * Provides access to the weather server.
  */
@@ -44,28 +36,15 @@ public class WeatherDataSource {
     private static WeatherDataSource instance;
 
     private WeatherDataSource() {
-
-
-
-
-
-
-
-
-
-
-
-
-
-    @@ -80,7 +79,7 @@ protected DataHolder doInBackground(DataHolder... dataArray) {
-
     }
+
     public static WeatherDataSource getInstance() {
         if (instance == null) {
             instance = new WeatherDataSource();
         }
         return instance;
     }
+
     /**
      * Get current weather data.
      *
@@ -79,10 +58,13 @@ public class WeatherDataSource {
         DataHolder data = new DataHolder(id, weatherRequestUrl, getWeatherCallback);
         new GetWeatherTask().execute(data);
     }
+
     public interface GetWeatherCallback {
         void onWeatherLoaded(int id, MeteoRecord meteoRecord);
+
         void onDataNotAvailable();
     }
+
     /**
      * Background task to connect to the weather api, get the data and parse it.
      */
@@ -102,15 +84,6 @@ public class WeatherDataSource {
             }
         }
 
-
-
-
-
-
-
-
-
-
         @Override
         protected void onPostExecute(DataHolder data) {
             if (data.getMeteoRecord() == null) {
@@ -119,6 +92,7 @@ public class WeatherDataSource {
             data.getGetWeatherCallback().onWeatherLoaded(data.getId(), data.getMeteoRecord());
         }
     }
+
     /**
      * Class to pass data to the async task.
      */
@@ -127,24 +101,31 @@ public class WeatherDataSource {
         private int id;
         private URL url;
         private MeteoRecord meteoRecord;
+
         DataHolder(int id, URL url, GetWeatherCallback getWeatherCallback) {
             this.id = id;
             this.url = url;
             this.getWeatherCallback = getWeatherCallback;
         }
+
         int getId() {
             return id;
         }
+
         URL getUrl() {
             return url;
         }
+
         GetWeatherCallback getGetWeatherCallback() {
             return getWeatherCallback;
         }
+
         MeteoRecord getMeteoRecord() {
             return meteoRecord;
         }
+
         void setMeteoRecord(MeteoRecord meteoRecord) {
             this.meteoRecord = meteoRecord;
         }
     }
+}

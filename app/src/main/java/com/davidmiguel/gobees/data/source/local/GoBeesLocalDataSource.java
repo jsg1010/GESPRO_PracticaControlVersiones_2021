@@ -15,6 +15,7 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <https://www.gnu.org/licenses/gpl-3.0.txt>.
  */
+
 package com.davidmiguel.gobees.data.source.local;
 
 import android.support.annotation.NonNull;
@@ -32,8 +33,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+
 import io.realm.Realm;
 import io.realm.RealmResults;
+
 /**
  * Concrete implementation of a data source as a Realm db.
  */
@@ -43,11 +46,15 @@ public class GoBeesLocalDataSource implements GoBeesDataSource {
     private static final String ID = "id";
     private static final String TIMESTAMP = "timestamp";
     private static final String LAST_REVISION = "lastRevision";
+
     private static GoBeesLocalDataSource instance;
     private Realm realm;
+
+
     private GoBeesLocalDataSource() {
         // Singleton
     }
+
     /**
      * Get GoBeesLocalDataSource instance.
      *
@@ -59,14 +66,17 @@ public class GoBeesLocalDataSource implements GoBeesDataSource {
         }
         return instance;
     }
+
     @Override
     public void openDb() {
         realm = Realm.getDefaultInstance();
     }
+
     @Override
     public void closeDb() {
         realm.close();
     }
+
     @Override
     public void deleteAll(@NonNull TaskCallback callback) {
         try {
@@ -82,6 +92,7 @@ public class GoBeesLocalDataSource implements GoBeesDataSource {
             callback.onFailure();
         }
     }
+
     @Override
     public void getApiaries(@NonNull GetApiariesCallback callback) {
         try {
@@ -92,6 +103,7 @@ public class GoBeesLocalDataSource implements GoBeesDataSource {
             callback.onDataNotAvailable();
         }
     }
+
     @Override
     public void getApiary(long apiaryId, @NonNull GetApiaryCallback callback) {
         try {
@@ -102,10 +114,12 @@ public class GoBeesLocalDataSource implements GoBeesDataSource {
             callback.onDataNotAvailable();
         }
     }
+
     @Override
     public Apiary getApiaryBlocking(long apiaryId) {
         return realm.copyFromRealm(realm.where(Apiary.class).equalTo(ID, apiaryId).findFirst());
     }
+
     @Override
     public void saveApiary(@NonNull final Apiary apiary, @NonNull TaskCallback callback) {
         try {
@@ -122,11 +136,13 @@ public class GoBeesLocalDataSource implements GoBeesDataSource {
             callback.onFailure();
         }
     }
+
     @Override
     public void refreshApiaries() {
         // Not required because the GoBeesRepository handles the logic of refreshing the
         // data from all the available data sources
     }
+
     @Override
     public void deleteApiary(long apiaryId, @NonNull TaskCallback callback) {
         try {
@@ -164,6 +180,7 @@ public class GoBeesLocalDataSource implements GoBeesDataSource {
             callback.onFailure();
         }
     }
+
     @Override
     public void deleteAllApiaries(@NonNull TaskCallback callback) {
         try {
@@ -181,11 +198,13 @@ public class GoBeesLocalDataSource implements GoBeesDataSource {
             callback.onFailure();
         }
     }
+
     @Override
     public void getNextApiaryId(@NonNull GetNextApiaryIdCallback callback) {
         Number nextId = realm.where(Apiary.class).max(ID);
         callback.onNextApiaryIdLoaded(nextId != null ? nextId.longValue() + 1 : 0);
     }
+
     @Override
     public Date getApiaryLastRevision(long apiaryId) {
         // Get apiary
@@ -194,6 +213,7 @@ public class GoBeesLocalDataSource implements GoBeesDataSource {
         return apiary.getHives() == null
                 ? null : apiary.getHives().where().maximumDate(LAST_REVISION);
     }
+
     @SuppressWarnings("ConstantConditions")
     @Override
     public void getHives(long apiaryId, @NonNull GetHivesCallback callback) {
@@ -205,6 +225,7 @@ public class GoBeesLocalDataSource implements GoBeesDataSource {
             callback.onDataNotAvailable();
         }
     }
+
     @Override
     public void getHive(long hiveId, @NonNull GetHiveCallback callback) {
         try {
@@ -215,6 +236,7 @@ public class GoBeesLocalDataSource implements GoBeesDataSource {
             callback.onDataNotAvailable();
         }
     }
+
     @Override
     public void getHiveWithRecordings(long hiveId, @NonNull GetHiveCallback callback) {
         try {
@@ -259,11 +281,13 @@ public class GoBeesLocalDataSource implements GoBeesDataSource {
             callback.onDataNotAvailable();
         }
     }
+
     @Override
     public void refreshHives(long apiaryId) {
         // Not required because the GoBeesRepository handles the logic of refreshing the
         // data from all the available data sources
     }
+
     @Override
     public void saveHive(final long apiaryId, @NonNull final Hive hive,
                          @NonNull TaskCallback callback) {
@@ -290,6 +314,7 @@ public class GoBeesLocalDataSource implements GoBeesDataSource {
             callback.onFailure();
         }
     }
+
     @Override
     public void deleteHive(long hiveId, @NonNull TaskCallback callback) {
         try {
@@ -311,11 +336,13 @@ public class GoBeesLocalDataSource implements GoBeesDataSource {
             callback.onFailure();
         }
     }
+
     @Override
     public void getNextHiveId(@NonNull GetNextHiveIdCallback callback) {
         Number nextId = realm.where(Hive.class).max(ID);
         callback.onNextHiveIdLoaded(nextId != null ? nextId.longValue() + 1 : 0);
     }
+
     @Override
     public void saveRecord(final long hiveId, @NonNull final Record record,
                            @NonNull TaskCallback callback) {
@@ -336,6 +363,7 @@ public class GoBeesLocalDataSource implements GoBeesDataSource {
             callback.onFailure();
         }
     }
+
     @Override
     public void saveRecords(final long hiveId, @NonNull final List<Record> records,
                             @NonNull SaveRecordingCallback callback) {
@@ -373,6 +401,7 @@ public class GoBeesLocalDataSource implements GoBeesDataSource {
             callback.onFailure();
         }
     }
+
     @Override
     public void getRecording(long apiaryId, long hiveId, Date start, Date end,
                              @NonNull GetRecordingCallback callback) {
@@ -411,6 +440,7 @@ public class GoBeesLocalDataSource implements GoBeesDataSource {
                 realm.copyFromRealm(records), realm.copyFromRealm(meteoRecords));
         callback.onRecordingLoaded(recording);
     }
+
     @Override
     public void deleteRecording(long hiveId, @NonNull Recording recording,
                                 @NonNull TaskCallback callback) {
@@ -445,6 +475,7 @@ public class GoBeesLocalDataSource implements GoBeesDataSource {
             callback.onFailure();
         }
     }
+
     @SuppressWarnings("ConstantConditions")
     @Override
     public void updateApiariesCurrentWeather(final List<Apiary> apiariesToUpdate,
@@ -491,6 +522,7 @@ public class GoBeesLocalDataSource implements GoBeesDataSource {
             callback.onFailure();
         }
     }
+
     @Override
     public void getAndSaveMeteoRecord(@NonNull final Apiary apiary, @NonNull TaskCallback callback) {
         try {
@@ -519,6 +551,7 @@ public class GoBeesLocalDataSource implements GoBeesDataSource {
             callback.onFailure();
         }
     }
+
     @Override
     public void saveMeteoRecords(final long apiaryId, @NonNull final List<MeteoRecord> meteoRecords) {
         realm.executeTransaction(new Realm.Transaction() {
@@ -539,6 +572,7 @@ public class GoBeesLocalDataSource implements GoBeesDataSource {
             }
         });
     }
+
     @Override
     public void refreshRecordings(long hiveId) {
         // Not required because the GoBeesRepository handles the logic of refreshing the
