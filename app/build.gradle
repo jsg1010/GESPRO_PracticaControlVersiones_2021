@@ -116,10 +116,9 @@ android {
     }
 }
 
-sourceSets {
-    test {
-        java.srcDirs = ['src/test/res']
-    }
+plugins {
+    // SonarQube : https://plugins.gradle.org/plugin/org.sonarqube
+    id "org.sonarqube" version "2.5"
 }
 
 dependencies {
@@ -198,13 +197,8 @@ configurations.compile.dependencies.each { compileDependency ->
         configurations.androidTestCompile.exclude module: "${compileDependency.getName()}"
     }
 }
-
-/*
-Copy test resources directory (test/mock/debug).
-*/
-task copyResDirectoryToTestMockDebugClasses(type: Copy) {
-    from "${projectDir}/src/testMock/res"
-    into "${buildDir}/intermediates/classes/test/mock/debug/res"
+task clean(type: Delete) {
+    delete rootProject.buildDir
 }
 
 /*
