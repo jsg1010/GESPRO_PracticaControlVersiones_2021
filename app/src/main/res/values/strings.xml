@@ -597,6 +597,7 @@
     <!-- Libs [CHAR LIMIT=100] -->
     <string name="libraries">Open Source Libraries:</string>
     <!-- Changelog [CHAR LIMIT=NONE] -->
+<<<<<<< HEAD
 <string name="changelog" translatable="false">
     <![CDATA[
     <b>Version 1.2:</b><br/>
@@ -604,6 +605,13 @@
     <b>Version 1.1:</b><br/>
     - Add user guide.<br/>
     - Minor improvements and fixes.<br/><br/>
+=======
+    <string name="changelog" translatable="false">
+        <![CDATA[
+        <b>Version 1.1:</b><br/>
+        - Add user guide.<br/>
+        - Minor improvements and fixes.<br/><br/>
+>>>>>>> parent of 4c96656... Merge branch 'release-1.2'
         <b>Version 1.0:</b><br/>
         - Splash screen.<br/>
         - Sample apiary generator.<br/>
